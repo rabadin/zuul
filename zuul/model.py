@@ -909,8 +909,13 @@ class Changeish(object):
     def getBasePath(self):
         base_path = ''
         if hasattr(self, 'refspec'):
+            # rvba: convert self.number to a string.
+            # This should have been fixed by commit c737028474 which does the
+            # conversion when the event is received from gerrit but for some
+            # reason crashes still happen here because self.number is a number
+            # and not a string.
             base_path = "%s/%s/%s" % (
-                self.number[-2:], self.number, self.patchset)
+                str(self.number)[-2:], self.number, self.patchset)
         elif hasattr(self, 'ref'):
             base_path = "%s/%s" % (self.newrev[:2], self.newrev)
 
